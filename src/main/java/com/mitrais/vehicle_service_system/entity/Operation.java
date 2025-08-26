@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -35,11 +33,4 @@ public class Operation {
     private String description;
     @Column(nullable = false)
     private Integer time;
-    @OneToMany
-    @JoinTable(joinColumns={
-            @JoinColumn(name = "brand", referencedColumnName = "brand", insertable = false, updatable = false),
-            @JoinColumn(name = "model", referencedColumnName = "model", insertable = false, updatable = false),
-            @JoinColumn(name = "engine", referencedColumnName = "engine",insertable = false, updatable = false)
-    })
-    private List<Vehicle> vehicles;
 }

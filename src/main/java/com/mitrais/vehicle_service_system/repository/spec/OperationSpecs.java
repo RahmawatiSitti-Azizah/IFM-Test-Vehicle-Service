@@ -14,9 +14,9 @@ public class OperationSpecs {
         };
     }
 
-    public static Specification<Operation> hasFieldEqual(String field, Object data){
+    public static Specification<Operation> hasFieldEqual(String field, Object data) {
         return (root, query, criteriaBuilder) -> {
-            if(data == null){
+            if (data == null) {
                 return criteriaBuilder.conjunction();
             }
             return criteriaBuilder.equal(root.get(field), data);

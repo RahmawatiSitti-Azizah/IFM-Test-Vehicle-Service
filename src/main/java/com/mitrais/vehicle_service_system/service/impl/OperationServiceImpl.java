@@ -8,7 +8,6 @@ import com.mitrais.vehicle_service_system.repository.spec.OperationSpecs;
 import com.mitrais.vehicle_service_system.service.OperationService;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<Operation> search(String brand, String model, String engine, Integer yearStart, Integer yearEnd, Double distanceStart, Double distanceEnd, String unit) {
+    public List<Operation> search(String brand, String model, String engine, Integer yearStart, Integer yearEnd, Double distanceStart, Double distanceEnd) {
         Specification<Operation> spec = Specification.anyOf(
                 OperationSpecs.hasFieldLike("brand", brand),
                 OperationSpecs.hasFieldLike("model", model),
@@ -47,6 +46,19 @@ public class OperationServiceImpl implements OperationService {
                 OperationSpecs.hasFieldEqual("yearEnd", yearEnd),
                 OperationSpecs.hasFieldEqual("distanceStart", distanceStart),
                 OperationSpecs.hasFieldEqual("distanceEnd", yearStart));
-        return repository.findAll(spec, Sort.by("approxCost"));
+        return repository.findAll(spec);
+    }
+
+    @Override
+    public List<Operation> searchByVehicle(String brand, String model, String engine, Integer makeYear, Double totalDistance, String unit) {
+        totalDistance = toKm(totalDistance, unit);
+        return repository.findAllBy(brand,model,engine,makeYear,totalDistance);
+    }
+
+    private static Double toKm(Double data, String unit){
+        if(unit.equalsIgnoreCase("km")){
+            return data;
+        }
+        return data * 1.60934;
     }
 }

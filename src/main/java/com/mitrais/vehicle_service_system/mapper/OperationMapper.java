@@ -16,7 +16,7 @@ public class OperationMapper {
         operation.setDistanceEnd(data.getDistanceEnd());
         operation.setApproxCost(data.getApproxCost());
         operation.setDescription(data.getDescription());
-        operation.setTime(operation.getTime());
+        operation.setTime(data.getTime());
         return operation;
     }
 }

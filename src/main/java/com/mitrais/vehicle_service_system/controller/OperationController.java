@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/operation")
 @RequiredArgsConstructor
 public class OperationController {
-    private OperationService service;
+    private final OperationService service;
 
     @PostMapping("")
     private ResponseEntity<Void> create(@Valid @RequestBody BaseOperationRequest createRequest) {
@@ -36,9 +36,20 @@ public class OperationController {
             @RequestParam(required = false) Integer yearStart,
             @RequestParam(required = false) Integer yearEnd,
             @RequestParam(required = false) Double distanceStart,
-            @RequestParam(required = false) Double distanceEnd,
-            @RequestParam(required = false, defaultValue = "km") String unit){
-        List<Operation> result = service.search(brand, model, engine, yearStart, yearEnd, distanceStart, distanceEnd, unit);
+            @RequestParam(required = false) Double distanceEnd){
+        List<Operation> result = service.search(brand, model, engine, yearStart, yearEnd, distanceStart, distanceEnd);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/search")
+    private ResponseEntity<List<Operation>> searchByVehicle(
+            @RequestParam(required = true) String brand,
+            @RequestParam(required = true) String model,
+            @RequestParam(required = true) String engine,
+            @RequestParam(required = true) Integer makeYear,
+            @RequestParam(required = true) Double totalDistance,
+            @RequestParam(required = false, defaultValue = "km") String unit) {
+        List<Operation> result = service.searchByVehicle(brand, model, engine, makeYear, totalDistance, unit);
         return ResponseEntity.ok(result);
     }
 }

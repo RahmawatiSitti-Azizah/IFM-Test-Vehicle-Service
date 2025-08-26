@@ -17,8 +17,8 @@ public interface OperationService {
     void create(@Valid BaseOperationRequest createRequest);
 
     /**
-     * Update Operation for specific id.
-     * @param id Operation id to be updated
+     * Update operation for specific id.
+     * @param id operation id to be updated
      * @param updateRequest operation details to update
      * @return updated operation entity
      */
@@ -34,8 +34,19 @@ public interface OperationService {
      * @param yearEnd keyword for yearEnd to be included in filter
      * @param distanceStart keyword for distanceStart to be included in filter
      * @param distanceEnd keyword for distanceEnd to be included in filter
-     * @param unit mode of distance can be set to (km/miles)
-     * @return List of operation based on filter sort by approxCost in ascending order (can be empty but not null)
+     * @return List of operation based on filter (can be empty but not null)
      */
-    List<Operation> search(String brand, String model, String engine, Integer yearStart, Integer yearEnd, Double distanceStart, Double distanceEnd, String unit);
+    List<Operation> search(String brand, String model, String engine, Integer yearStart, Integer yearEnd, Double distanceStart, Double distanceEnd);
+
+    /**
+     * Search operation based on (brand/model/engine/makeYear/totalDistance)
+     * @param brand keyword for brand to be included in filter
+     * @param model keyword for model to be included in filter
+     * @param engine keyword for engine to be included in filter
+     * @param makeYear keyword for yearStart to be included in filter
+     * @param totalDistance keyword for distanceEnd to be included in filter
+     * @param unit mode of distance can be set to (km/miles)
+     * @return List of operation based on filter criteria(can be empty but not null)
+     */
+    List<Operation> searchByVehicle(String brand, String model, String engine, Integer makeYear, Double totalDistance, String unit);
 }

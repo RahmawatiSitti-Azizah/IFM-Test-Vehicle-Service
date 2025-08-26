@@ -18,8 +18,8 @@ public class Vehicle {
     private String model;
     private String engine;
     private Integer makeYear;
-    @OneToMany
-    @JoinTable(joinColumns={
+    @OneToMany(cascade = {CascadeType.DETACH})
+    @JoinColumns({
             @JoinColumn(name = "brand", referencedColumnName = "brand", insertable = false, updatable = false),
             @JoinColumn(name = "model", referencedColumnName = "model", insertable = false, updatable = false),
             @JoinColumn(name = "engine", referencedColumnName = "engine",insertable = false, updatable = false)
