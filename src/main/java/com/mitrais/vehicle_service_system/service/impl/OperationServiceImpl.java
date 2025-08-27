@@ -55,14 +55,6 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public List<Operation> searchByVehicle(String brand, String model, String engine, Integer makeYear, Double totalDistance, String unit) {
-        totalDistance = toKm(totalDistance, unit);
         return repository.findAllBy(brand, model, engine, makeYear, totalDistance);
-    }
-
-    private static Double toKm(Double data, String unit) {
-        if (unit.equalsIgnoreCase("km")) {
-            return data;
-        }
-        return data * 1.60934;
     }
 }
