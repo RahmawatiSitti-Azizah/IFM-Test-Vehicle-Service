@@ -6,7 +6,6 @@ import com.mitrais.vehicle_service_system.mapper.OperationMapper;
 import com.mitrais.vehicle_service_system.repository.OperationRepository;
 import com.mitrais.vehicle_service_system.repository.spec.OperationSpecs;
 import com.mitrais.vehicle_service_system.service.OperationService;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public Operation update(@Nonnull Long id, BaseOperationRequest updateRequest) throws EntityNotFoundException {
+    public Operation update(Long id, BaseOperationRequest updateRequest) throws EntityNotFoundException {
         Operation existingEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Operation with id " + id + " not found"));
         Operation updatedEntity = OperationMapper.convert(updateRequest);
         updatedEntity.setId(existingEntity.getId());

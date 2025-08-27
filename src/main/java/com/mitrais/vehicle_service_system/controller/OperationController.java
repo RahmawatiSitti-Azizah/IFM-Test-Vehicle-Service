@@ -45,12 +45,12 @@ public class OperationController {
 
     @GetMapping("/suggestion")
     private ResponseEntity<List<Operation>> suggestion(
-            @RequestParam(required = true) String brand,
-            @RequestParam(required = true) String model,
-            @RequestParam(required = true) String engine,
-            @RequestParam(required = true) Integer makeYear,
-            @RequestParam(required = true) Double totalDistance,
-            @RequestParam(required = false, defaultValue = "km") String unit) {
+            @Valid @RequestParam(required = true) String brand,
+            @Valid @RequestParam(required = true) String model,
+            @Valid @RequestParam(required = true) String engine,
+            @Valid @RequestParam(required = true) Integer makeYear,
+            @Valid @RequestParam(required = true) Double totalDistance,
+            @Valid @RequestParam(required = false, defaultValue = "km") String unit) {
         totalDistance = toKm(totalDistance, unit);
         List<Operation> result = service.searchByVehicle(brand, model, engine, makeYear, totalDistance, unit);
         return ResponseEntity.ok(result);
