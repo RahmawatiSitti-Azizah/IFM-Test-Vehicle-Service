@@ -3,6 +3,7 @@ package com.mitrais.vehicle_service_system.controller;
 import com.mitrais.vehicle_service_system.dto.BaseOperationRequest;
 import com.mitrais.vehicle_service_system.entity.Operation;
 import com.mitrais.vehicle_service_system.service.OperationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/operation")
 @RequiredArgsConstructor
+@Tag(name = "Operation API", description = "Operation related endpoint")
 public class OperationController {
     private final OperationService service;
 
@@ -23,7 +25,7 @@ public class OperationController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Operation> update(@PathVariable Long id,@Valid @RequestBody BaseOperationRequest updateRequest) {
+    private ResponseEntity<Operation> update(@PathVariable Long id, @Valid @RequestBody BaseOperationRequest updateRequest) {
         Operation operation = service.update(id, updateRequest);
         return ResponseEntity.ok(operation);
     }
@@ -36,7 +38,7 @@ public class OperationController {
             @RequestParam(required = false) Integer yearStart,
             @RequestParam(required = false) Integer yearEnd,
             @RequestParam(required = false) Double distanceStart,
-            @RequestParam(required = false) Double distanceEnd){
+            @RequestParam(required = false) Double distanceEnd) {
         List<Operation> result = service.search(brand, model, engine, yearStart, yearEnd, distanceStart, distanceEnd);
         return ResponseEntity.ok(result);
     }

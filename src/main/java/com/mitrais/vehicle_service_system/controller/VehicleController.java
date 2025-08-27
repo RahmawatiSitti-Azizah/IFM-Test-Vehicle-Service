@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/vehicle")
 @RequiredArgsConstructor
-@Tag(name = "Vehicle API", description = "Vehicle related Endpoint")
+@Tag(name = "Vehicle API", description = "Vehicle related endpoint")
 public class VehicleController {
     private final VehicleService service;
 

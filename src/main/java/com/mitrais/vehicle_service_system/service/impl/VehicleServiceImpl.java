@@ -35,7 +35,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public List<Vehicle> findVehicleFrom(String brand, String model, String engine) {
-        List<Vehicle> result = repository.findByModelAndBrandAndEngine(brand, model, engine);
+        List<Vehicle> result = repository.findByModelAndBrandAndEngine(model, brand, engine);
         return result;
     }
 }

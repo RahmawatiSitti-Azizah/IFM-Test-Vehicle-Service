@@ -10,6 +10,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 public class OperationServiceImpl implements OperationService {
     private final OperationRepository repository;
 
-    public OperationServiceImpl(OperationRepository repository){
+    public OperationServiceImpl(OperationRepository repository) {
         this.repository = repository;
     }
 
@@ -29,7 +30,7 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public Operation update(@Nonnull Long id, BaseOperationRequest updateRequest) throws EntityNotFoundException {
-        Operation existingEntity = repository.findById(id).orElseThrow(()-> new EntityNotFoundException("Operation with id "+id+" not found"));
+        Operation existingEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Operation with id " + id + " not found"));
         Operation updatedEntity = OperationMapper.convert(updateRequest);
         updatedEntity.setId(existingEntity.getId());
         updatedEntity = repository.save(updatedEntity);
@@ -38,25 +39,28 @@ public class OperationServiceImpl implements OperationService {
 
     @Override
     public List<Operation> search(String brand, String model, String engine, Integer yearStart, Integer yearEnd, Double distanceStart, Double distanceEnd) {
-        Specification<Operation> spec = Specification.anyOf(
-                OperationSpecs.hasFieldLike("brand", brand),
-                OperationSpecs.hasFieldLike("model", model),
-                OperationSpecs.hasFieldLike("engine", engine),
-                OperationSpecs.hasFieldEqual("yearStart", yearStart),
-                OperationSpecs.hasFieldEqual("yearEnd", yearEnd),
-                OperationSpecs.hasFieldEqual("distanceStart", distanceStart),
-                OperationSpecs.hasFieldEqual("distanceEnd", yearStart));
-        return repository.findAll(spec);
+        if (StringUtils.hasText(brand) || StringUtils.hasText(model) || StringUtils.hasText(engine) || yearStart != null || yearEnd != null || distanceStart != null || distanceEnd != null) {
+            Specification<Operation> spec = Specification.anyOf(
+                    OperationSpecs.hasFieldLike("brand", brand),
+                    OperationSpecs.hasFieldLike("model", model),
+                    OperationSpecs.hasFieldLike("engine", engine),
+                    OperationSpecs.hasFieldEqual("yearStart", yearStart),
+                    OperationSpecs.hasFieldEqual("yearEnd", yearEnd),
+                    OperationSpecs.hasFieldEqual("distanceStart", distanceStart),
+                    OperationSpecs.hasFieldEqual("distanceEnd", yearStart));
+            return repository.findAll(spec);
+        }
+        return repository.findAll();
     }
 
     @Override
     public List<Operation> searchByVehicle(String brand, String model, String engine, Integer makeYear, Double totalDistance, String unit) {
         totalDistance = toKm(totalDistance, unit);
-        return repository.findAllBy(brand,model,engine,makeYear,totalDistance);
+        return repository.findAllBy(brand, model, engine, makeYear, totalDistance);
     }
 
-    private static Double toKm(Double data, String unit){
-        if(unit.equalsIgnoreCase("km")){
+    private static Double toKm(Double data, String unit) {
+        if (unit.equalsIgnoreCase("km")) {
             return data;
         }
         return data * 1.60934;
